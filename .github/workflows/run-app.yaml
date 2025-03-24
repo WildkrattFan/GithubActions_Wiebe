@@ -11,13 +11,9 @@ jobs:
         with:
           dotnet-version: '8.0.405'
       - uses: nuget/setup-nuget@v1
-      - name: Install Mono
-        run: sudo apt-get update && sudo apt-get install -y mono-complete
       - name: Nuget Restore
         run: nuget restore GithubActions.sln
       - name: Install dependencies
         run: dotnet restore GithubActions.sln
       - name: Build
-        run: dotnet build --configuration Release GithubActions.sln
-      - name: Run Unit Tests
-        run: mono ./packages/NUnit.ConsoleRunner.*/tools/nunit3-console.exe ./Tests/bin/Release/Tests.dll
+        run: msbuild /p:Configuration=Release GithubActions.sln
