@@ -41,7 +41,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.301'
+          dotnet-version: '8.0.405'
       - uses: nuget/setup-nuget@v1
       - name: Nuget Restore
         run: nuget restore GithubActions.sln
@@ -99,7 +99,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '5.0.301'
+          dotnet-version: '8.0.405'
       - uses: nuget/setup-nuget@v1
       - name: Nuget Restore
         run: nuget restore GithubActions.sln
