@@ -4,20 +4,27 @@ on: [push, pull_request]
 
 jobs:
   check-bats-version:
-    runs-on: windows-latest  # ✅ Switch from 'ubuntu-latest' to 'windows-latest'
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '8.0.x'  # ✅ Keep this for .NET 8
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1  # ✅ Install MSBuild on Windows
-      - name: Restore dependencies
-        run: nuget restore GithubActions.sln  # ✅ Works on Windows
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v1
+
+      - name: Restore NuGet Packages
+        run: nuget restore GithubActions.sln
+
+      - name: Install dependencies
+        run: dotnet restore GithubActions.sln
+
       - name: Build
-        run: msbuild /p:Configuration=Release GithubActions.sln  # ✅ Works on Windows
-      - name: Run Unit Tests
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Install NUnit Console Runner
+        run: nuget install NUnit.ConsoleRunner -Version 3.16.3 -OutputDirectory testrunner
+
+      - name: Run Unit Tests with NUnit
         run: |
-            & "C:\Program Files\NUnit.org\nunit-console\nunit3-console.exe" ./Tests/bin/Release/Tests.dll
+          .\testrunner\NUnit.ConsoleRunner.3.16.3\tools\nunit3-console.exe .\Tests\bin\Release\Tests.dll
+
 
