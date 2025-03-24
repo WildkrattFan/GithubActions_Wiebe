@@ -17,3 +17,7 @@ jobs:
         run: nuget restore GithubActions.sln  # ✅ Works on Windows
       - name: Build
         run: msbuild /p:Configuration=Release GithubActions.sln  # ✅ Works on Windows
+      - name: Run Unit Tests
+        run: |
+            & "C:\Program Files\NUnit.org\nunit-console\nunit3-console.exe" ./Tests/bin/Release/Tests.dll
+
