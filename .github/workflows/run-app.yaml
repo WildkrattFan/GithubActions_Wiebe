@@ -4,16 +4,16 @@ on: [push, pull_request]
 
 jobs:
   check-bats-version:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest  # ✅ Switch from 'ubuntu-latest' to 'windows-latest'
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '8.0.405'
-      - uses: nuget/setup-nuget@v1
-      - name: Nuget Restore
-        run: nuget restore GithubActions.sln
-      - name: Install dependencies
-        run: dotnet restore GithubActions.sln
+          dotnet-version: '8.0.x'  # ✅ Keep this for .NET 8
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1  # ✅ Install MSBuild on Windows
+      - name: Restore dependencies
+        run: nuget restore GithubActions.sln  # ✅ Works on Windows
       - name: Build
-        run: msbuild /p:Configuration=Release GithubActions.sln
+        run: msbuild /p:Configuration=Release GithubActions.sln  # ✅ Works on Windows
